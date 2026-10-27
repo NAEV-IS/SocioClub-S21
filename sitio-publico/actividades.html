@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Actividades — Club Los Algarrobos</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <header>
+        <div class="header-contenido">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%23ffffff' stroke='%231b5e20' stroke-width='3'/><path d='M32 14 C20 14 16 26 24 34 L28 34 L28 48 L36 48 L36 34 L40 34 C48 26 44 14 32 14 Z' fill='%232e7d32'/></svg>"
+                 alt="Escudo del Club Social y Deportivo Los Algarrobos"
+                 class="logo-img">
+            <div>
+                <h1>Club Social y Deportivo Los Algarrobos</h1>
+                <p class="subtitulo">Zona norte de Córdoba · Desde 1962</p>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="actividades.html" class="activo">Actividades</a></li>
+            <li><a href="preinscripcion.html">Preinscripción</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <h2>Catálogo de Actividades</h2>
+        <p>Filtrá por disciplina o ingresá tu edad para consultar las actividades aptas disponibles.</p>
+
+        <section id="filtros" aria-label="Filtros de búsqueda">
+            <div class="campo">
+                <label for="filtroDisciplina">Disciplina:</label>
+                <select id="filtroDisciplina">
+                    <option value="todas">Todas las disciplinas</option>
+                    <option value="Fútbol">Fútbol</option>
+                    <option value="Vóley">Vóley</option>
+                    <option value="Básquet">Básquet</option>
+                    <option value="Natación">Natación</option>
+                    <option value="Patín">Patín</option>
+                    <option value="Ajedrez">Ajedrez</option>
+                    <option value="Fitness">Fitness</option>
+                    <option value="Bienestar">Bienestar</option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label for="filtroEdad">Edad del interesado/a:</label>
+                <input type="number" id="filtroEdad" min="1" max="99" placeholder="Ej: 10">
+            </div>
+
+            <div class="campo campo-boton">
+                <button type="button" id="btnLimpiar" class="btn btn-secundario">Limpiar filtros</button>
+            </div>
+        </section>
+
+        <section id="catalogo" aria-live="polite"></section>
+    </main>
+
+    <footer>
+        <p>© 2026 Club Social y Deportivo Los Algarrobos — Córdoba Capital</p>
+        <button type="button" id="btnVolver" class="btn btn-volver">Volver a la página anterior</button>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

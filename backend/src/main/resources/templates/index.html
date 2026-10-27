@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head('Panel de secretaría')}"></head>
+<body>
+<nav th:replace="~{fragments/header :: navbar}"></nav>
+
+<main>
+    <h1>Panel de Secretaría</h1>
+    <p>Bienvenida, Marta. Desde este panel podés gestionar las actividades deportivas y sociales del Club Los Algarrobos.</p>
+    <p style="margin-top: 1.5rem;">
+        <a th:href="@{/actividades}" class="btn">Ver listado de actividades</a>
+    </p>
+</main>
+
+<footer th:replace="~{fragments/footer :: pie}"></footer>
+</body>
+</html>

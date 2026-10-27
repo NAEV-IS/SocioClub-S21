@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preinscripción — Club Los Algarrobos</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <header>
+        <div class="header-contenido">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%23ffffff' stroke='%231b5e20' stroke-width='3'/><path d='M32 14 C20 14 16 26 24 34 L28 34 L28 48 L36 48 L36 34 L40 34 C48 26 44 14 32 14 Z' fill='%232e7d32'/></svg>"
+                 alt="Escudo del Club Social y Deportivo Los Algarrobos"
+                 class="logo-img">
+            <div>
+                <h1>Club Social y Deportivo Los Algarrobos</h1>
+                <p class="subtitulo">Zona norte de Córdoba · Desde 1962</p>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="actividades.html">Actividades</a></li>
+            <li><a href="preinscripcion.html" class="activo">Preinscripción</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section>
+            <h2>Formulario de Preinscripción</h2>
+            <p>Completá tus datos para reservar tu lugar. Los campos con borde naranja son obligatorios.</p>
+
+            <form id="formPreinscripcion" novalidate>
+                <div class="campo">
+                    <label for="nombre">Nombre y Apellido *</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Ej: Camila Ludueña" required>
+                    <span class="error" id="errorNombre"></span>
+                </div>
+
+                <div class="campo">
+                    <label for="dni">DNI (7 u 8 dígitos sin puntos) *</label>
+                    <input type="text" id="dni" name="dni" placeholder="Ej: 32456789" required>
+                    <span class="error" id="errorDni"></span>
+                </div>
+
+                <div class="campo">
+                    <label for="email">Correo electrónico *</label>
+                    <input type="email" id="email" name="email" placeholder="ejemplo@correo.com" required>
+                    <span class="error" id="errorEmail"></span>
+                </div>
+
+                <div class="campo">
+                    <label for="edad">Edad *</label>
+                    <input type="number" id="edad" name="edad" min="1" max="99" placeholder="Ej: 18" required>
+                    <span class="error" id="errorEdad"></span>
+                </div>
+
+                <div class="campo">
+                    <label for="actividad">Actividad de interés *</label>
+                    <select id="actividad" name="actividad" required>
+                        <option value="">-- Seleccioná una actividad --</option>
+                    </select>
+                    <span class="error" id="errorActividad"></span>
+                </div>
+
+                <div class="acciones-formulario">
+                    <button type="submit" class="btn">Enviar preinscripción</button>
+                    <button type="reset" class="btn btn-secundario">Limpiar</button>
+                </div>
+            </form>
+
+            <p id="mensajeExito" class="exito" hidden>
+                ✅ ¡Gracias! Tu preinscripción fue registrada. Te contactaremos pronto.
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 Club Social y Deportivo Los Algarrobos — Córdoba Capital</p>
+        <button type="button" id="btnVolver" class="btn btn-volver">Volver a la página anterior</button>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

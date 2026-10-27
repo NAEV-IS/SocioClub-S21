@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head('Listado de actividades')}"></head>
+<body>
+<nav th:replace="~{fragments/header :: navbar}"></nav>
+
+<main>
+    <div class="encabezado-seccion">
+        <h1>Listado de actividades</h1>
+        <a th:href="@{/actividades/nueva}" class="btn">+ Nueva actividad</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Disciplina</th>
+                <th>Días y horario</th>
+                <th>Edades</th>
+                <th>Cupo disp.</th>
+                <th>Profesor/a</th>
+                <th>Cuota</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="act : ${actividades}">
+                <td th:text="${act.nombre}">Nombre</td>
+                <td th:text="${act.disciplina}">Disciplina</td>
+                <td th:text="${act.dias + ' - ' + act.horario}">Días y horario</td>
+                <td th:text="${act.edadMinima + ' a ' + act.edadMaxima + ' años'}">Edades</td>
+                <td th:text="${cupos[act.id] + ' / ' + act.cupoMaximo}">Cupo disp.</td>
+                <td th:text="${act.profesor}">Profesor/a</td>
+                <td th:text="${'$' + act.cuotaMensual}">Cuota</td>
+                <td>
+                    <a th:href="@{/actividades/editar/{id}(id=${act.id})}" class="accion-editar">Editar</a>
+                    |
+                    <a th:href="@{/actividades/eliminar/{id}(id=${act.id})}"
+                       class="accion-eliminar"
+                       onclick="return confirm('¿Eliminar esta actividad?');">Eliminar</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</main>
+
+<footer th:replace="~{fragments/footer :: pie}"></footer>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head(${titulo})}"></head>
+<body>
+<nav th:replace="~{fragments/header :: navbar}"></nav>
+
+<main>
+    <h1 th:text="${titulo}">Formulario de actividad</h1>
+
+    <form th:action="@{/actividades}" th:object="${actividad}" method="post">
+        <input type="hidden" th:field="*{id}">
+
+        <label for="nombre">Nombre de la actividad</label>
+        <input type="text" id="nombre" th:field="*{nombre}" required>
+
+        <label for="disciplina">Disciplina</label>
+        <select id="disciplina" th:field="*{disciplina}">
+            <option value="Fútbol">Fútbol</option>
+            <option value="Vóley">Vóley</option>
+            <option value="Básquet">Básquet</option>
+            <option value="Natación">Natación</option>
+            <option value="Patín">Patín</option>
+            <option value="Ajedrez">Ajedrez</option>
+            <option value="Fitness">Fitness</option>
+            <option value="Bienestar">Bienestar</option>
+        </select>
+
+        <label for="profesor">Profesor/a</label>
+        <input type="text" id="profesor" th:field="*{profesor}">
+
+        <label>Días</label>
+        <input type="hidden" id="dias" th:field="*{dias}">
+        <div class="selector-dias" id="selectorDias">
+            <button type="button" class="btn-dia" data-dia="Lun">Lun</button>
+            <button type="button" class="btn-dia" data-dia="Mar">Mar</button>
+            <button type="button" class="btn-dia" data-dia="Mié">Mié</button>
+            <button type="button" class="btn-dia" data-dia="Jue">Jue</button>
+            <button type="button" class="btn-dia" data-dia="Vie">Vie</button>
+            <button type="button" class="btn-dia" data-dia="Sáb">Sáb</button>
+            <button type="button" class="btn-dia" data-dia="Dom">Dom</button>
+        </div>
+
+        <label for="horario">Horario</label>
+        <input type="time" id="horario" th:field="*{horario}">
+
+        <label for="edadMinima">Edad mínima</label>
+        <input type="number" id="edadMinima" th:field="*{edadMinima}" min="1" max="99">
+
+        <label for="edadMaxima">Edad máxima</label>
+        <input type="number" id="edadMaxima" th:field="*{edadMaxima}" min="1" max="99">
+
+        <label for="cupoMaximo">Cupo máximo</label>
+        <input type="number" id="cupoMaximo" th:field="*{cupoMaximo}" min="1">
+
+        <label for="cuotaMensual">Cuota mensual ($)</label>
+        <input type="number" id="cuotaMensual" th:field="*{cuotaMensual}" min="0" step="0.01">
+
+        <div class="acciones-form">
+            <button type="submit" class="btn">Guardar</button>
+            <a th:href="@{/actividades}" class="btn btn-cancelar">Cancelar</a>
+        </div>
+    </form>
+</main>
+
+<footer th:replace="~{fragments/footer :: pie}"></footer>
+
+<script>
+    (function () {
+        const inputDias = document.getElementById("dias");
+        const botones = Array.from(document.querySelectorAll(".btn-dia"));
+
+        const normalizar = (str) =>
+            str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+        // Marcar como activos los días que ya vienen cargados al editar
+        const valorInicial = normalizar(inputDias.value || "");
+        botones.forEach((btn) => {
+            const clave = normalizar(btn.dataset.dia);
+            if (valorInicial.includes(clave)) {
+                btn.classList.add("activo");
+            }
+
+            btn.addEventListener("click", () => {
+                btn.classList.toggle("activo");
+                actualizarInputDias();
+            });
+        });
+
+        function actualizarInputDias() {
+            const seleccionados = botones
+                .filter((btn) => btn.classList.contains("activo"))
+                .map((btn) => btn.dataset.dia);
+
+            if (seleccionados.length === 0) {
+                inputDias.value = "";
+            } else if (seleccionados.length === 1) {
+                inputDias.value = seleccionados[0];
+            } else {
+                const ultimos = seleccionados.slice(0, -1).join(", ");
+                const final = seleccionados[seleccionados.length - 1];
+                inputDias.value = ultimos + " y " + final;
+            }
+        }
+    })();
+</script>
+</body>
+</html>

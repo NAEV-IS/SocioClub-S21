@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(titulo)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${titulo}">Club Los Algarrobos</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<nav th:fragment="navbar">
+    <div class="logo">🟢 Club Los Algarrobos</div>
+    <ul>
+        <li><a th:href="@{/}">Inicio</a></li>
+        <li><a th:href="@{/actividades}">Actividades</a></li>
+        <li><a th:href="@{/actividades/nueva}">Nueva actividad</a></li>
+    </ul>
+</nav>
+</body>
+</html>

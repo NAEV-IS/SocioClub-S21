@@ -1,0 +1,192 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f6f4;
+    color: #333;
+    line-height: 1.5;
+}
+
+nav {
+    background-color: #2e7d32;
+    color: #ffffff;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav .logo {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+}
+
+nav ul li a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+}
+
+main {
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+    color: #2e7d32;
+    margin-bottom: 1rem;
+}
+
+.encabezado-seccion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.encabezado-seccion h1 {
+    margin-bottom: 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+th,
+td {
+    padding: 0.6rem;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: #e8f5e9;
+    color: #1b5e20;
+}
+
+tr:hover {
+    background-color: #f9fbf9;
+}
+
+.accion-editar {
+    color: #2e7d32;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.accion-eliminar {
+    color: #c62828;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.accion-editar:hover,
+.accion-eliminar:hover {
+    text-decoration: underline;
+}
+
+form {
+    display: grid;
+    gap: 0.5rem;
+    max-width: 500px;
+    margin-top: 1rem;
+}
+
+form label {
+    font-weight: bold;
+    margin-top: 0.4rem;
+}
+
+form input,
+form select {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.selector-dias {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+}
+
+.btn-dia {
+    flex: 1;
+    min-width: 52px;
+    padding: 0.5rem 0.4rem;
+    background-color: #ffffff;
+    color: #2e7d32;
+    border: 1px solid #2e7d32;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+.btn-dia:hover {
+    background-color: #e8f5e9;
+}
+
+.btn-dia.activo {
+    background-color: #2e7d32;
+    color: #ffffff;
+}
+
+.acciones-form {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.btn {
+    display: inline-block;
+    background-color: #2e7d32;
+    color: #ffffff;
+    padding: 0.6rem 1rem;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #1b5e20;
+}
+
+.btn-cancelar {
+    background-color: #999;
+}
+
+.btn-cancelar:hover {
+    background-color: #777;
+}
+
+footer {
+    text-align: center;
+    color: #777;
+    padding: 1.5rem 0;
+    font-size: 0.9rem;
+}
