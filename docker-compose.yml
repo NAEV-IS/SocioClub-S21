@@ -1,0 +1,61 @@
+version: "3.9"
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: socioclub-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: socioclub
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot123"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - socioclub-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: socioclub-backend
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/socioclub?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root123
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION: "true"
+      SPRING_SQL_INIT_MODE: always
+    ports:
+      - "8080:8080"
+    networks:
+      - socioclub-network
+
+  sitio-publico:
+    build:
+      context: ./sitio-publico
+      dockerfile: Dockerfile
+    container_name: socioclub-sitio
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    networks:
+      - socioclub-network
+
+volumes:
+  mysql_data:
+
+networks:
+  socioclub-network:
+    driver: bridge
