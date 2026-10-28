@@ -10,6 +10,9 @@
         <a th:href="@{/actividades/nueva}" class="btn">+ Nueva actividad</a>
     </div>
 
+    <p class="alerta alerta-error" th:if="${error}" th:text="${error}">Error</p>
+    <p class="alerta alerta-exito" th:if="${exito}" th:text="${exito}">OK</p>
+
     <table>
         <thead>
             <tr>
@@ -24,20 +27,24 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each="act : ${actividades}">
+            <tr th:if="${#lists.isEmpty(actividades)}">
+                <td colspan="8">No hay actividades cargadas.</td>
+            </tr>
+            <tr th:each="act : ${actividades}" th:classappend="${cupos[act.id] <= 0} ? 'sin-cupo'">
                 <td th:text="${act.nombre}">Nombre</td>
                 <td th:text="${act.disciplina}">Disciplina</td>
                 <td th:text="${act.dias + ' - ' + act.horario}">Días y horario</td>
                 <td th:text="${act.edadMinima + ' a ' + act.edadMaxima + ' años'}">Edades</td>
                 <td th:text="${cupos[act.id] + ' / ' + act.cupoMaximo}">Cupo disp.</td>
                 <td th:text="${act.profesor}">Profesor/a</td>
-                <td th:text="${'$' + act.cuotaMensual}">Cuota</td>
+                <td th:text="${'$ ' + #numbers.formatDecimal(act.cuotaMensual, 1, 'POINT', 0, 'COMMA')}">Cuota</td>
                 <td>
                     <a th:href="@{/actividades/editar/{id}(id=${act.id})}" class="accion-editar">Editar</a>
                     |
-                    <a th:href="@{/actividades/eliminar/{id}(id=${act.id})}"
-                       class="accion-eliminar"
-                       onclick="return confirm('¿Eliminar esta actividad?');">Eliminar</a>
+                    <form th:action="@{/actividades/eliminar/{id}(id=${act.id})}" method="post"
+                          class="form-inline" onsubmit="return confirm('¿Eliminar esta actividad?');">
+                        <button type="submit" class="accion-eliminar">Eliminar</button>
+                    </form>
                 </td>
             </tr>
         </tbody>

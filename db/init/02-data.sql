@@ -1,3 +1,4 @@
+SET NAMES utf8mb4;
 CREATE DATABASE IF NOT EXISTS socioclub;
 USE socioclub;
 
@@ -60,4 +61,46 @@ INSERT INTO socios (dni, nombre, apellido, fecha_nacimiento, email, telefono, es
 ('33234501', 'Martina', 'Cabrera', '1998-10-14', 'marti@mail.com', '3514000012', 'AL_DIA'),
 ('30345602', 'Héctor', 'Domínguez', '1982-08-19', 'hector@mail.com', '3514000013', 'AL_DIA'),
 ('48456703', 'Alma', 'Tejerina', '2021-02-06', 'alma@mail.com', '3514000014', 'AL_DIA'),
-('43567804', 'Tomás', 'Quiroga', '2009-12-01', 'tomas@mail.com', '3514000015', 'AL_DIA');
+('43567804', 'Tomás', 'Quiroga', '2009-12-01', 'tomas@mail.com', '3514000015', 'AL_DIA'),
+('38111222', 'Sergio', 'Maldonado', '1991-04-17', 'sergio@mail.com', '3514000016', 'AL_DIA'),
+('31222333', 'Gabriela', 'Ochoa', '1985-09-02', 'gabi@mail.com', '3514000017', 'AL_DIA'),
+('27333444', 'Norma', 'Vélez', '1972-01-29', 'norma@mail.com', '3514000018', 'AL_DIA'),
+('39444555', 'Julieta', 'Barrionuevo', '1996-06-11', 'juli@mail.com', '3514000019', 'AL_DIA'),
+('34555666', 'Pablo', 'Herrera', '1989-12-20', 'pablo@mail.com', '3514000020', 'AL_DIA'),
+('26666777', 'Silvia', 'Moyano', '1968-03-08', 'silvia@mail.com', '3514000021', 'AL_DIA'),
+('44777888', 'Agustina', 'Lencina', '2002-07-25', 'agus@mail.com', '3514000022', 'AL_DIA');
+
+-- Inscripciones iniciales (ids de socio y actividad según el orden de los INSERT de arriba).
+-- Dejan preparados los casos para demostrar las reglas de negocio:
+--   RN1 (cupo):        Yoga (id 8) queda con 14 de 15 lugares ocupados -> 1 inscripción más pasa, la siguiente se rechaza.
+--   RN2 (duplicado):   Camila Ludueña (id 4) ya está en Yoga.
+--   RN3 (edad):        Thiago Molina (id 1, 8 años) no entra en Vóley mixto (13 a 60).
+--   RN4 (moroso):      Bruno Castro (id 3) y Franco Sosa (id 7) están MOROSOS.
+--   RN5 (máximo 3):    Camila Ludueña (id 4) ya tiene 3 actividades activas.
+INSERT INTO inscripciones (fecha_inscripcion, estado, socio_id, actividad_id) VALUES
+-- Yoga: 14 activas sobre cupo 15 (cupo casi completo)
+('2026-03-02', 'ACTIVA', 4, 8),
+('2026-03-02', 'ACTIVA', 5, 8),
+('2026-03-03', 'ACTIVA', 8, 8),
+('2026-03-03', 'ACTIVA', 9, 8),
+('2026-03-04', 'ACTIVA', 12, 8),
+('2026-03-04', 'ACTIVA', 13, 8),
+('2026-03-05', 'ACTIVA', 15, 8),
+('2026-03-05', 'ACTIVA', 16, 8),
+('2026-03-06', 'ACTIVA', 17, 8),
+('2026-03-06', 'ACTIVA', 18, 8),
+('2026-03-09', 'ACTIVA', 19, 8),
+('2026-03-09', 'ACTIVA', 20, 8),
+('2026-03-10', 'ACTIVA', 21, 8),
+('2026-03-10', 'ACTIVA', 22, 8),
+-- Camila Ludueña: 3 actividades activas (Yoga + Natación + Funcional)
+('2026-03-02', 'ACTIVA', 4, 4),
+('2026-03-02', 'ACTIVA', 4, 7),
+-- Otras inscripciones activas
+('2026-03-11', 'ACTIVA', 1, 1),
+('2026-03-11', 'ACTIVA', 2, 2),
+('2026-03-12', 'ACTIVA', 2, 5),
+('2026-03-12', 'ACTIVA', 11, 3),
+('2026-03-13', 'ACTIVA', 3, 7),
+-- Baja lógica (historial): Roberto Funes dejó Natación
+('2026-03-02', 'BAJA', 5, 4);
