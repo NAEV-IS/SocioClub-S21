@@ -13,12 +13,13 @@ Sistema web para gestión de socios, actividades e inscripciones del **Club Soci
 
 ## 👥 Integrantes del equipo
 
-| Nombre | Rol | Email |
-| :--- | :--- | :--- |
-| `[Nombre 1]` | `[Rol / Responsabilidad]` | `[email1@ejemplo.com]` |
-| `[Nombre 2]` | `[Rol / Responsabilidad]` | `[email2@ejemplo.com]` |
-| `[Nombre 3]` | `[Rol / Responsabilidad]` | `[email3@ejemplo.com]` |
-| `[Nombre 4]` | `[Rol / Responsabilidad]` | `[email4@ejemplo.com]` |
+| Apellido y nombre |
+| :--- |
+| Carrara, Francisco |
+| Demarchi, Facundo |
+| Robledo, Thomas |
+| Rosso, Gastón |
+| Tamagusuku, Agustín |
 
 ---
 
@@ -38,7 +39,8 @@ Sistema web para gestión de socios, actividades e inscripciones del **Club Soci
 - **Servicio de Actividades (`ActividadService`):** Operaciones CRUD y cálculo dinámico de cupo disponible.
 - **Controladores MVC (`ActividadController`, `HomeController`):** Gestión completa de alta, baja, modificación y listado de actividades.
 - **Vistas Thymeleaf:** Plantillas reutilizando fragmentos (`header` y `footer`) y selector interactivo de días en el formulario.
-- **Base de datos MySQL:** Script de inicialización automática con las **8 actividades oficiales** y **15 socios de prueba** (incluyendo socios al día y morosos).
+- **Base de datos MySQL:** Script de inicialización automática con las **8 actividades oficiales**, **22 socios de prueba** (2 morosos) e **inscripciones iniciales** (Yoga con el cupo casi completo: 14/15).
+- **Validaciones de actividad en el servicio:** campos obligatorios, edad mínima ≤ máxima, cupo ≥ inscriptos activos y eliminación solo sin inscriptos activos (mensajes vía `ReglaNegocioException`).
 
 ### ⏳ Pendiente para Semana 2
 - ABM de Socios con listado paginado (`Pageable`) y búsqueda por apellido.
@@ -165,7 +167,6 @@ SocioClub-S21/
 │   └── plan-trabajo.md         # Roadmap detallado por semana
 ├── docker-compose.yml          # Orquestación de servicios
 ├── .env.example                # Plantilla de variables de entorno
-├── MASTER_DEV.md               # Guía maestra de desarrollo
 └── README.md
 ```
 
@@ -173,14 +174,26 @@ SocioClub-S21/
 
 ## 🧪 Datos de prueba iniciales
 
-### Socios destacados (de los 15 precargados en `02-data.sql`)
+### Socios destacados (de los 22 precargados en `02-data.sql`)
 
 | DNI | Nombre | Fecha de Nacimiento | Estado de Cuota |
 | :--- | :--- | :--- | :--- |
 | `45123456` | Thiago Molina | 2018-04-12 | `AL_DIA` |
 | `35345678` | Bruno Castro | 2008-02-19 | `MOROSO` |
 | `41789012` | Franco Sosa | 2010-09-08 | `MOROSO` |
-| `32456789` | Camila Ludueña | 1995-11-25 | `AL_DIA` |
+| `32456789` | Camila Ludueña | 1995-11-25 | `AL_DIA` (ya tiene 3 actividades activas) |
+
+### Inscripciones iniciales (casos para demostrar las reglas)
+
+| Caso | Dato precargado |
+| :--- | :--- |
+| RN1 Cupo | Yoga tiene 14 de 15 lugares ocupados |
+| RN2 Duplicado | Camila Ludueña ya está inscripta en Yoga |
+| RN3 Edad | Thiago Molina (8 años) no puede entrar a Vóley mixto (13 a 60) |
+| RN4 Moroso | Bruno Castro y Franco Sosa están `MOROSO` |
+| RN5 Máximo 3 | Camila Ludueña tiene Yoga, Natación y Funcional activas |
+
+> Si ya tenían el volumen de MySQL creado, los datos nuevos se cargan recién con `docker compose down -v && docker compose up -d`.
 
 ### Actividades iniciales (8 disciplinas)
 
@@ -222,7 +235,7 @@ SocioClub-S21/
 | `GET` | `/actividades/nueva` | Formulario de alta de nueva actividad |
 | `POST` | `/actividades` | Creación o actualización de una actividad |
 | `GET` | `/actividades/editar/{id}` | Formulario de edición de actividad existente |
-| `GET` | `/actividades/eliminar/{id}` | Eliminación de actividad por ID |
+| `POST` | `/actividades/eliminar/{id}` | Eliminación de actividad (solo sin inscriptos activos) |
 
 ### API REST (Planificados para Semana 3)
 | Método | Ruta | Descripción |
