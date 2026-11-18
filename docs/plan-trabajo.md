@@ -4,7 +4,7 @@ Roadmap detallado de desarrollo para el proyecto **SocioClub** del Club Social y
 
 ---
 
-## Estado actual: Semana 1 (40% completado)
+## Base entregada en la semana 1
 
 ### ✅ Completado
 
@@ -28,7 +28,7 @@ Roadmap detallado de desarrollo para el proyecto **SocioClub** del Club Social y
 - [x] `ActividadService` con cálculo de cupo disponible
 - [x] `ActividadController` con ABM completo
 - [x] Vistas Thymeleaf con fragmentos reutilizables (`header` y `footer`) y selector de días por botones
-- [x] Base de datos MySQL en Docker con las 8 actividades y 15 socios iniciales
+- [x] Base de datos MySQL en Docker con las 8 actividades y 22 socios iniciales
 
 ### 🔄 En progreso
 - [ ] Pruebas manuales integrales del ABM de actividades
@@ -36,43 +36,9 @@ Roadmap detallado de desarrollo para el proyecto **SocioClub** del Club Social y
 
 ---
 
-## ⏳ Pendiente
+## Semana 2 — implementada
 
-## Semana 2 (70% - Entrega: `[FECHA SEMANA 2]`)
-
-### Parte B - Backend (Completar)
-- [ ] `SocioService` y `SocioController` con ABM completo
-- [ ] Listado paginado de socios con `Pageable`
-- [ ] Búsqueda de socios por apellido (`findByApellidoContainingIgnoreCase`)
-- [ ] Formulario Thymeleaf de alta y edición de socios
-- [ ] `InscripcionService` con implementación de las reglas de negocio:
-  - [ ] **RN1:** Validación de cupo disponible
-  - [ ] **RN2:** Validación de inscripciones duplicadas
-  - [ ] **RN3:** Validación de rango de edad permitido por la actividad
-  - [ ] **RN4:** Validación de estado de cuota (`MOROSO` no puede inscribirse)
-  - [ ] **RN5:** Validación de máximo 3 actividades activas por socio
-- [ ] Formulario Thymeleaf de inscripción (selección de socio + actividad)
-- [ ] Listado de inscriptos activos por actividad y baja lógica
-- [ ] Vista de detalle de inscripción
-
-### Parte D - App React (Iniciar)
-- [ ] Inicializar proyecto en carpeta `app-socios/`
-- [ ] Configurar React Router con 4 rutas:
-  - [ ] `/` → Ingreso de socio por DNI
-  - [ ] `/actividades` → Catálogo de actividades con filtros
-  - [ ] `/actividades/:id` → Detalle de actividad con botón "Inscribirme"
-  - [ ] `/mis-actividades` → Inscripciones activas del socio y resumen de cuota
-- [ ] Desarrollar componentes funcionales:
-  - [ ] `Encabezado`
-  - [ ] `Pie`
-  - [ ] `TarjetaActividad`
-  - [ ] `ListaActividades`
-  - [ ] `DetalleActividad`
-  - [ ] `MisActividades`
-  - [ ] `ResumenCuota`
-- [ ] Implementar `Context` para el estado global del socio logueado
-- [ ] Prueba inicial con datos locales (previo a la conexión con la API REST)
-- [ ] Validación de propiedades con `PropTypes` en `TarjetaActividad` y `ResumenCuota`
+Ver [recorrido de la entrega y evidencia](entrega-2.md). Secretaría incluye alta, edición, búsqueda y paginación de socios, inscripción validada en el servicio, listado activo y baja lógica. React incluye las cuatro rutas y los siete componentes con datos locales.
 
 ---
 
