@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head('Nueva inscripción')}"></head>
+<body>
+<nav th:replace="~{fragments/header :: navbar}"></nav>
+<main>
+    <h1>Nueva inscripción</h1>
+    <p class="alerta alerta-error" role="alert" th:if="${error}" th:text="${error}">Error</p>
+    <form th:action="@{/inscripciones}" method="post">
+        <label for="socioId">Socio</label>
+        <select id="socioId" name="socioId" required>
+            <option value="">Seleccioná un socio</option>
+            <option th:each="socio : ${socios}" th:value="${socio.id}"
+                    th:selected="${socio.id == socioId}"
+                    th:text="${socio.apellido + ', ' + socio.nombre + ' — DNI ' + socio.dni}">Socio</option>
+        </select>
+        <label for="actividadId">Actividad</label>
+        <select id="actividadId" name="actividadId" required>
+            <option value="">Seleccioná una actividad</option>
+            <option th:each="act : ${actividades}" th:value="${act.id}"
+                    th:selected="${act.id == actividadId}"
+                    th:text="${act.nombre + ' — ' + act.edadMinima + ' a ' + act.edadMaxima + ' años — cupo disponible: ' + cupos[act.id]}">Actividad</option>
+        </select>
+        <div class="acciones-form">
+            <button type="submit" class="btn">Inscribir</button>
+            <a th:href="@{/actividades}" class="btn btn-cancelar">Cancelar</a>
+        </div>
+    </form>
+    <h2>Inscriptos por actividad</h2>
+    <p th:if="${#lists.isEmpty(actividades)}">No hay actividades cargadas.</p>
+    <ul>
+        <li th:each="act : ${actividades}">
+            <a th:href="@{/inscripciones/actividad/{id}(id=${act.id})}" th:text="${act.nombre}">Actividad</a>
+            <span th:text="${' — cupo disponible: ' + cupos[act.id] + ' / ' + act.cupoMaximo}">Cupo</span>
+        </li>
+    </ul>
+</main>
+<footer th:replace="~{fragments/footer :: pie}"></footer>
+</body>
+</html>

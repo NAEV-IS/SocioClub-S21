@@ -11,6 +11,13 @@ public interface InscripcionRepository extends JpaRepository<Inscripcion, Long> 
     @Query("SELECT COUNT(i) FROM Inscripcion i WHERE i.actividad.id = :actividadId AND i.estado = 'ACTIVA'")
     long countActivasByActividadId(@Param("actividadId") Long actividadId);
 
+    boolean existsBySocioIdAndActividadIdAndEstado(Long socioId, Long actividadId, EstadoInscripcion estado);
+
+    long countBySocioIdAndEstado(Long socioId, EstadoInscripcion estado);
+
+    List<Inscripcion> findByActividadIdAndEstadoOrderBySocioApellidoAscSocioNombreAscIdAsc(
+            Long actividadId, EstadoInscripcion estado);
+
     // Método derivado: Spring arma "WHERE actividad_id = ? AND estado = ?"
     List<Inscripcion> findByActividadIdAndEstado(Long actividadId, EstadoInscripcion estado);
 }

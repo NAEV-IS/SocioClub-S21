@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head('Confirmar baja')}"></head>
+<body>
+<nav th:replace="~{fragments/header :: navbar}"></nav>
+<main>
+    <h1>Confirmar baja</h1>
+    <p class="alerta alerta-error" role="alert" th:if="${error}" th:text="${error}">Error</p>
+    <p th:text="${inscripcion.socio.apellido + ', ' + inscripcion.socio.nombre + ' — ' + inscripcion.actividad.nombre}">Inscripción</p>
+    <p th:attr="data-estado=${inscripcion.estado}" th:text="${'Estado: ' + inscripcion.estado}">Estado</p>
+    <form th:if="${inscripcion.estado.name() == 'ACTIVA'}"
+          th:action="@{/inscripciones/{id}/baja(id=${inscripcion.id})}" method="post">
+        <p>La inscripción quedará en estado BAJA y se liberará un lugar. Se conservará el historial.</p>
+        <div class="acciones-form">
+            <button type="submit" name="confirmar" value="true" class="btn">Confirmar baja</button>
+            <a th:href="@{/inscripciones/actividad/{id}(id=${inscripcion.actividad.id})}" class="btn btn-cancelar">Cancelar</a>
+        </div>
+    </form>
+    <p th:if="${inscripcion.estado.name() == 'BAJA'}">Esta inscripción ya está dada de baja.</p>
+    <a th:href="@{/inscripciones/actividad/{id}(id=${inscripcion.actividad.id})}">Volver a inscriptos activos</a>
+</main>
+<footer th:replace="~{fragments/footer :: pie}"></footer>
+</body>
+</html>

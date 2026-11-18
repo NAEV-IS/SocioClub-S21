@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head('Inscriptos activos')}"></head>
+<body>
+<nav th:replace="~{fragments/header :: navbar}"></nav>
+<main>
+    <div class="encabezado-seccion">
+        <h1 th:text="${'Inscriptos activos — ' + actividad.nombre}">Inscriptos activos</h1>
+        <a th:href="@{/inscripciones(actividadId=${actividad.id})}" class="btn">+ Nueva inscripción</a>
+    </div>
+    <p class="alerta alerta-error" role="alert" th:if="${error}" th:text="${error}">Error</p>
+    <p class="alerta alerta-exito" role="status" th:if="${exito}" th:text="${exito}">OK</p>
+    <p th:attr="data-cupo=${cupo},data-activas=${#lists.size(inscripciones)}"
+       th:text="${'Cupo disponible: ' + cupo + ' / ' + actividad.cupoMaximo}">Cupo disponible</p>
+    <table>
+        <thead><tr><th>Socio</th><th>DNI</th><th>Fecha de inscripción</th><th>Acciones</th></tr></thead>
+        <tbody>
+        <tr th:if="${#lists.isEmpty(inscripciones)}"><td colspan="4">No hay inscriptos activos.</td></tr>
+        <tr th:each="inscripcion : ${inscripciones}"
+            th:attr="data-inscripcion-id=${inscripcion.id},data-socio-id=${inscripcion.socio.id}">
+            <td th:text="${inscripcion.socio.apellido + ', ' + inscripcion.socio.nombre}">Socio</td>
+            <td th:text="${inscripcion.socio.dni}">DNI</td>
+            <td th:text="${#temporals.format(inscripcion.fechaInscripcion, 'dd/MM/yyyy')}">Fecha</td>
+            <td><a th:href="@{/inscripciones/{id}/baja(id=${inscripcion.id})}" class="accion-eliminar">Dar de baja</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/inscripciones}" class="btn btn-cancelar">Volver a inscripciones</a>
+</main>
+<footer th:replace="~{fragments/footer :: pie}"></footer>
+</body>
+</html>
