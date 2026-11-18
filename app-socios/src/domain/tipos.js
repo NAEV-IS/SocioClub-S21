@@ -5,7 +5,7 @@ export const actividadPropType = PropTypes.shape({
   nombre: PropTypes.string.isRequired,
   disciplina: PropTypes.string.isRequired,
   profesor: PropTypes.string.isRequired,
-  dias: PropTypes.arrayOf(PropTypes.number).isRequired,
+  dias: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.string]).isRequired,
   horario: PropTypes.string.isRequired,
   edadMinima: PropTypes.number.isRequired,
   edadMaxima: PropTypes.number.isRequired,

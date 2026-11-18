@@ -10,6 +10,7 @@
 .agenda__columns, .agenda__row { display: grid; grid-template-columns: 5rem minmax(0, 1fr) 8rem 7rem 4rem; gap: var(--space-4); align-items: center; padding: var(--space-6); }
 .agenda__columns { padding-block: var(--space-4); background: var(--color-page); color: var(--color-muted); font-size: var(--font-size-small); }
 .agenda__entry { border-top: 1px solid var(--color-line); }
+.agenda__entry--sin-cupo { background: var(--color-page); color: var(--color-muted); }
 .agenda__row--selected { background: var(--color-primary-soft); }
 .agenda__time { color: var(--color-primary-dark); font-weight: bold; font-variant-numeric: tabular-nums; }
 .agenda__identity { min-width: 0; }

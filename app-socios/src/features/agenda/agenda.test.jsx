@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { screen, within, waitFor } from '@testing-library/react';
+import { fireEvent, screen, within, waitFor } from '@testing-library/react';
 import { Route, Routes } from 'react-router-dom';
 import { ACTIVIDADES, SOCIOS } from '../../data/fixtures';
 import { useSocio } from '../../context/SocioContext';
@@ -99,7 +99,9 @@ test('un alta válida usa la acción compartida y no permite duplicarla', async 
 test('cupo completo permanece visible y no modifica las selecciones', () => {
   montar({ ruta: '/actividades/6', socios: [{ ...SOCIOS[0], actividadesIniciales: [] }],
     actividades: [{ ...ACTIVIDADES[5], cupoMaximo: 8, ocupadosIniciales: 8 }] });
-  expect(within(screen.getByRole('article', { name: 'Ajedrez', exact: true })).getByText('Cupo completo', { exact: true })).toBeInTheDocument();
+  const tarjeta = screen.getByRole('article', { name: 'Ajedrez', exact: true });
+  expect(tarjeta).toHaveClass('agenda__entry--sin-cupo');
+  expect(within(tarjeta).getByText('Sin cupo', { exact: true })).toBeInTheDocument();
   expect(within(detalle('Ajedrez')).getByRole('button', { name: 'Inscribirme' })).toBeDisabled();
   expect(screen.getByLabelText('Actividades seleccionadas')).toHaveTextContent('0');
 });
@@ -118,4 +120,34 @@ test('TarjetaActividad registra validación PropTypes del modelo real', () => {
     PropTypes.checkPropTypes(TarjetaActividad.propTypes, { actividad: { ...ACTIVIDADES[0], cuotaMensual: 'incorrecta' } }, 'prop', 'TarjetaActividad');
     expect(warning.mock.calls.flat().join(' ')).toContain('cuotaMensual');
   } finally { warning.mockRestore(); }
+});
+
+describe('Pruebas de componente sobre TarjetaActividad (Parte E)', () => {
+  test('muestra el nombre de la actividad y permite inscribirse con fireEvent cuando hay cupo', () => {
+    const onInscribir = jest.fn();
+    renderConClub(<TarjetaActividad actividad={ACTIVIDADES[5]} onInscribir={onInscribir} />, {
+      socios: [{ ...SOCIOS[0], actividadesIniciales: [] }],
+    });
+    expect(screen.getByRole('heading', { level: 2, name: 'Ajedrez' })).toBeInTheDocument();
+    const boton = screen.getByRole('button', { name: 'Inscribirme' });
+    expect(boton).toBeEnabled();
+    fireEvent.click(boton);
+    expect(onInscribir).toHaveBeenCalledWith(ACTIVIDADES[5].id);
+  });
+
+  test('con cupo 0 muestra "Sin cupo", aplica clase dinámica y deshabilita el botón', () => {
+    const onInscribir = jest.fn();
+    const actividadSinCupo = { ...ACTIVIDADES[5], cupoMaximo: 8, ocupadosIniciales: 8 };
+    renderConClub(<TarjetaActividad actividad={actividadSinCupo} onInscribir={onInscribir} />, {
+      socios: [{ ...SOCIOS[0], actividadesIniciales: [] }],
+      actividades: [actividadSinCupo],
+    });
+    const tarjeta = screen.getByRole('article', { name: 'Ajedrez', exact: true });
+    expect(tarjeta).toHaveClass('agenda__entry--sin-cupo');
+    expect(within(tarjeta).getByText('Sin cupo', { exact: true })).toBeInTheDocument();
+    const boton = within(tarjeta).getByRole('button', { name: 'Inscribirme' });
+    expect(boton).toBeDisabled();
+    fireEvent.click(boton);
+    expect(onInscribir).not.toHaveBeenCalled();
+  });
 });

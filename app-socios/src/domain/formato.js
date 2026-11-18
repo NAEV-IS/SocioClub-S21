@@ -9,6 +9,7 @@ export function formatearMoneda(importe) {
 }
 
 export function formatearDias(dias) {
+  if (typeof dias === 'string') return dias;
   return dias.map(id => DIAS.find(dia => dia.id === id)?.corto).filter(Boolean).join(' · ');
 }
 
