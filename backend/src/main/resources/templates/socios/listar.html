@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head('Listado de socios')}"></head>
+<body>
+<nav th:replace="~{fragments/header :: navbar}"></nav>
+<main>
+    <div class="encabezado-seccion">
+        <h1>Listado de socios</h1>
+        <a th:href="@{/socios/nuevo}" class="btn">+ Nuevo socio</a>
+    </div>
+    <p class="alerta alerta-error" role="alert" th:if="${error}" th:text="${error}">Error</p>
+    <p class="alerta alerta-exito" role="status" th:if="${exito}" th:text="${exito}">OK</p>
+
+    <form th:action="@{/socios}" method="get">
+        <label for="apellido">Buscar por apellido</label>
+        <input type="search" id="apellido" name="apellido" th:value="${apellido}">
+        <div class="acciones-form">
+            <button type="submit" class="btn">Buscar</button>
+            <a th:href="@{/socios}" class="btn btn-cancelar">Ver todos</a>
+        </div>
+    </form>
+
+    <p th:attr="data-total=${pagina.totalElements}" th:text="${'Total: ' + pagina.totalElements}">Total</p>
+    <table>
+        <thead>
+            <tr><th>DNI</th><th>Apellido</th><th>Nombre</th><th>Estado de cuota</th><th>Acciones</th></tr>
+        </thead>
+        <tbody>
+            <tr th:if="${pagina.empty}"><td colspan="5">No hay socios para mostrar.</td></tr>
+            <tr th:each="socio : ${pagina.content}" th:attr="data-socio-id=${socio.id}">
+                <td th:text="${socio.dni}">DNI</td>
+                <td th:text="${socio.apellido}">Apellido</td>
+                <td th:text="${socio.nombre}">Nombre</td>
+                <td th:text="${socio.estadoCuota != null and socio.estadoCuota.name() == 'MOROSO' ? 'Moroso' : 'Al día'}">Cuota</td>
+                <td><a th:href="@{/socios/editar/{id}(id=${socio.id})}" class="accion-editar">Editar</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <nav aria-label="Páginas de socios" th:if="${pagina.totalPages > 1}">
+        <a th:if="${pagina.hasPrevious()}" th:href="@{/socios(apellido=${apellido},page=${pagina.number - 1})}" class="btn">Anterior</a>
+        <span th:text="${'Página ' + (pagina.number + 1) + ' de ' + pagina.totalPages}">Página</span>
+        <a th:if="${pagina.hasNext()}" th:href="@{/socios(apellido=${apellido},page=${pagina.number + 1})}" class="btn">Siguiente</a>
+    </nav>
+</main>
+<footer th:replace="~{fragments/footer :: pie}"></footer>
+</body>
+</html>
