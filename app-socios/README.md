@@ -8,10 +8,10 @@ Desde `app-socios/`:
 
 ```sh
 npm ci
-npm run dev
+npm start
 ```
 
-Abrí la dirección de loopback que imprime Vite. No habilites scripts de instalación bloqueados ni instales paquetes del sistema para ejecutar esta app.
+Abrí http://localhost:3000. El proyecto usa Create React App con `react-scripts`. No habilites scripts de instalación bloqueados ni instales paquetes del sistema para ejecutar esta app.
 
 ## Recorrido
 
@@ -33,10 +33,9 @@ Camila empieza con base de $65.000, bonificación de $9.750 (15%) y total de $55
 ```sh
 npm test
 npm run build
-npm run preview
 ```
 
-Jest/Testing Library prueban las reglas, Context y recorridos públicos con datos aislados en memoria. `build` genera `dist/`; el host definitivo deberá servir el archivo de entrada para las rutas de la SPA.
+Jest/Testing Library prueban las reglas, Context y recorridos públicos con datos aislados en memoria. `build` genera `build/`; el host definitivo deberá servir el archivo de entrada para las rutas de la SPA.
 
 ## Límites de esta entrega
 
