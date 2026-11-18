@@ -1,0 +1,36 @@
+.login {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-12);
+  max-width: 900px;
+  margin-inline: auto;
+  align-items: start;
+}
+
+.login .login__form { padding: var(--space-8); }
+.login .login__form h1 { margin-bottom: var(--space-2); }
+.login .field { margin-block: var(--space-6) var(--space-4); }
+.login .login__form .button { width: 100%; }
+.login .login__form .support { margin-top: var(--space-3); }
+.login .field-error {
+  margin-bottom: var(--space-4);
+  padding: var(--space-3);
+  border-radius: var(--radius-control);
+  background: var(--color-error-soft);
+}
+.login .login__samples { padding-block: var(--space-6); }
+.login .login__samples > p { margin-block: var(--space-2) var(--space-5); }
+.login .login__sample {
+  padding-block: var(--space-4);
+  border-top: 1px solid var(--color-line);
+}
+.login .login__sample strong { display: block; }
+
+@media (max-width: 900px) {
+  .login { gap: var(--space-6); }
+}
+@media (max-width: 600px) {
+  .login { grid-template-columns: minmax(0, 1fr); gap: var(--space-6); }
+  .login .login__form { padding: var(--space-6); }
+  .login .login__samples { padding: 0; }
+}
