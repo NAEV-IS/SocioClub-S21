@@ -1,5 +1,6 @@
 package com.losalgarrobos.socioclub.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class Socio {
     @Column(name = "estado_cuota")
     private EstadoCuota estadoCuota = EstadoCuota.AL_DIA;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "socio")
     private List<Inscripcion> inscripciones = new ArrayList<>();
 

@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { DIAS } from '../../data/fixtures';
 import { useSocio } from '../../context/SocioContext';
+import { incluyeDia } from '../../domain/formato';
 import TarjetaActividad from './TarjetaActividad';
 import DetalleActividad from './DetalleActividad';
 import './agenda.css';
@@ -12,7 +13,7 @@ export default function ListaActividades() {
   const anterior = useRef(null);
   const seleccionada = actividades.find(actividad => String(actividad.id) === id);
   const visibles = actividades.filter(actividad =>
-    (!filtros.dia || actividad.dias.includes(filtros.dia)) &&
+    incluyeDia(actividad.dias, filtros.dia) &&
     (!filtros.disciplina || actividad.disciplina === filtros.disciplina) &&
     (filtros.edad === '' || (Number(filtros.edad) >= actividad.edadMinima && Number(filtros.edad) <= actividad.edadMaxima))
   ).sort((a, b) => a.horario.localeCompare(b.horario) || a.id - b.id);

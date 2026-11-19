@@ -38,3 +38,17 @@ app-socios/.env.local
 *.log
 npm-debug.log*
 MASTER_DEV.md
+
+# Documentación auxiliar ignorada
+docs/*
+!docs/TPI_SocioClub_Grupo7.pdf
+!docs/postman/
+docs/postman/*
+!docs/postman/SocioClub.postman_collection.json
+backend/docs/
+sitio-publico/README.md
+app-socios/README.md
+backend/src/test/http/
+backend/README.md
+app-socios/src/features/agenda/README.md
+app-socios/src/features/membership/README.md

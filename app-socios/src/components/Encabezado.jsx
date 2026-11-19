@@ -4,7 +4,7 @@ import { calcularEdad } from '../domain/club';
 import { nombreCompleto } from '../domain/formato';
 
 export default function Encabezado() {
-  const { socio, misActividades } = useSocio();
+  const { socio, misActividades, cerrarSesion } = useSocio();
   return <header className="shell__header">
     <div className="container shell__brand-row">
       <Link className="shell__brand" to={socio ? '/actividades' : '/'} aria-label="SocioClub, inicio">
@@ -27,7 +27,7 @@ export default function Encabezado() {
         </span>
         <span aria-label="Actividades activas">{misActividades.length} {misActividades.length === 1 ? 'actividad' : 'actividades'}</span>
       </div>
-      <Link className="shell__change" to="/">Cambiar socio</Link>
+      <Link className="shell__change" to="/" onClick={cerrarSesion}>Cerrar sesión</Link>
     </div></div>}
   </header>;
 }

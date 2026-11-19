@@ -1,0 +1,728 @@
+{
+  "info": {
+    "_postman_id": "a7f1c2e4-8b3d-4c1a-9f5e-202611180001",
+    "name": "SocioClub - API REST (Parte C)",
+    "description": "Colección de endpoints mínimos del Anexo A para el backend Spring Boot de SocioClub, incluyendo casos exitosos, errores 404 y los 5 rechazos por reglas de negocio RN1 a RN5 (409 Conflict).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "actividadTemporalId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "inscripcionTemporalId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Actividades",
+      "item": [
+        {
+          "name": "GET Listar todas las actividades (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('Devuelve arreglo con cupoDisponible', () => {",
+                  "  pm.expect(body).to.be.an('array').that.is.not.empty;",
+                  "  pm.expect(body[0]).to.have.property('cupoDisponible');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/actividades",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "actividades"]
+            }
+          }
+        },
+        {
+          "name": "GET Filtrar actividades por disciplina (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('Todas son de disciplina Fútbol', () => {",
+                  "  pm.expect(body).to.be.an('array').that.is.not.empty;",
+                  "  body.forEach(a => pm.expect(a.disciplina).to.eql('Fútbol'));",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/actividades?disciplina=Fútbol",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "actividades"],
+              "query": [
+                {
+                  "key": "disciplina",
+                  "value": "Fútbol"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Detalle de actividad existente (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('Devuelve actividad 1 con cupoDisponible', () => {",
+                  "  pm.expect(body.id).to.eql(1);",
+                  "  pm.expect(body).to.have.property('cupoDisponible');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/actividades/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "actividades", "1"]
+            }
+          }
+        },
+        {
+          "name": "GET Detalle de actividad inexistente (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 404 Not Found', () => pm.response.to.have.status(404));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/actividades/999",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "actividades", "999"]
+            }
+          }
+        },
+        {
+          "name": "POST Crear actividad temporal (201)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201 Created', () => pm.response.to.have.status(201));",
+                  "const body = pm.response.json();",
+                  "pm.collectionVariables.set('actividadTemporalId', body.id);",
+                  "pm.test('Cupo disponible inicial igual a cupoMaximo', () => {",
+                  "  pm.expect(body.cupoDisponible).to.eql(1);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Tenis de mesa Postman\",\n  \"disciplina\": \"Recreación\",\n  \"profesor\": \"Carlos Pérez\",\n  \"dias\": \"Sáb\",\n  \"horario\": \"15:00\",\n  \"edadMinima\": 10,\n  \"edadMaxima\": 70,\n  \"cupoMaximo\": 1,\n  \"cuotaMensual\": 12000\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/actividades",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "actividades"]
+            }
+          }
+        },
+        {
+          "name": "PUT Modificar actividad temporal (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('Actualiza horario', () => pm.expect(pm.response.json().horario).to.eql('16:00'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Tenis de mesa Postman\",\n  \"disciplina\": \"Recreación\",\n  \"profesor\": \"Carlos Pérez\",\n  \"dias\": \"Sáb\",\n  \"horario\": \"16:00\",\n  \"edadMinima\": 10,\n  \"edadMaxima\": 70,\n  \"cupoMaximo\": 1,\n  \"cuotaMensual\": 12500\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/actividades/{{actividadTemporalId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "actividades", "{{actividadTemporalId}}"]
+            }
+          }
+        },
+        {
+          "name": "PUT Modificar actividad inexistente (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 404 Not Found', () => pm.response.to.have.status(404));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Inexistente\",\n  \"disciplina\": \"Fútbol\",\n  \"profesor\": \"Nadie\",\n  \"dias\": \"Lun\",\n  \"horario\": \"10:00\",\n  \"edadMinima\": 6,\n  \"edadMaxima\": 12,\n  \"cupoMaximo\": 10,\n  \"cuotaMensual\": 1000\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/actividades/999",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "actividades", "999"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Socios",
+      "item": [
+        {
+          "name": "GET Buscar socio por DNI existente (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('Devuelve Camila Ludueña', () => {",
+                  "  pm.expect(body.dni).to.eql('32456789');",
+                  "  pm.expect(body.nombre).to.eql('Camila');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/socios/dni/32456789",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "socios", "dni", "32456789"]
+            }
+          }
+        },
+        {
+          "name": "GET Buscar socio por DNI inexistente (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 404 Not Found', () => pm.response.to.have.status(404));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/socios/dni/99999999",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "socios", "dni", "99999999"]
+            }
+          }
+        },
+        {
+          "name": "GET Inscripciones activas de Camila (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('Devuelve 3 inscripciones ACTIVAS sin ciclo JSON', () => {",
+                  "  pm.expect(body).to.be.an('array').with.lengthOf(3);",
+                  "  body.forEach(i => pm.expect(i.estado).to.eql('ACTIVA'));",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/socios/4/inscripciones",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "socios", "4", "inscripciones"]
+            }
+          }
+        },
+        {
+          "name": "GET Inscripciones de socio inexistente (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 404 Not Found', () => pm.response.to.have.status(404));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/socios/999/inscripciones",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "socios", "999", "inscripciones"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Inscripciones y Reglas (RN1 - RN5)",
+      "item": [
+        {
+          "name": "POST Inscripción exitosa en actividad temporal (201)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201 Created', () => pm.response.to.have.status(201));",
+                  "const body = pm.response.json();",
+                  "pm.collectionVariables.set('inscripcionTemporalId', body.id);",
+                  "pm.test('Estado ACTIVA', () => pm.expect(body.estado).to.eql('ACTIVA'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"socioId\": 5,\n  \"actividadId\": {{actividadTemporalId}}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/inscripciones",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "inscripciones"]
+            }
+          }
+        },
+        {
+          "name": "DELETE Actividad con inscripto activo (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 409 Conflict', () => pm.response.to.have.status(409));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/actividades/{{actividadTemporalId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "actividades", "{{actividadTemporalId}}"]
+            }
+          }
+        },
+        {
+          "name": "POST RN1 - Sin cupo disponible (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 409 Conflict', () => pm.response.to.have.status(409));",
+                  "const body = pm.response.json();",
+                  "pm.test('Devuelve regla RN1 y mensaje oficial', () => {",
+                  "  pm.expect(body.regla).to.eql('RN1');",
+                  "  pm.expect(body.error).to.eql('La actividad no tiene cupo disponible');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"socioId\": 9,\n  \"actividadId\": {{actividadTemporalId}}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/inscripciones",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "inscripciones"]
+            }
+          }
+        },
+        {
+          "name": "POST RN2 - Inscripción duplicada (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 409 Conflict', () => pm.response.to.have.status(409));",
+                  "const body = pm.response.json();",
+                  "pm.test('Devuelve regla RN2 y mensaje oficial', () => {",
+                  "  pm.expect(body.regla).to.eql('RN2');",
+                  "  pm.expect(body.error).to.eql('El socio ya está inscripto en esta actividad');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"socioId\": 5,\n  \"actividadId\": 8\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/inscripciones",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "inscripciones"]
+            }
+          }
+        },
+        {
+          "name": "POST RN3 - Edad fuera de rango (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 409 Conflict', () => pm.response.to.have.status(409));",
+                  "const body = pm.response.json();",
+                  "pm.test('Devuelve regla RN3 indicando rango permitido', () => {",
+                  "  pm.expect(body.regla).to.eql('RN3');",
+                  "  pm.expect(body.error).to.include('13 y 60');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"socioId\": 1,\n  \"actividadId\": 2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/inscripciones",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "inscripciones"]
+            }
+          }
+        },
+        {
+          "name": "POST RN4 - Socio MOROSO (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 409 Conflict', () => pm.response.to.have.status(409));",
+                  "const body = pm.response.json();",
+                  "pm.test('Devuelve regla RN4 y mensaje oficial', () => {",
+                  "  pm.expect(body.regla).to.eql('RN4');",
+                  "  pm.expect(body.error).to.eql('Debe regularizar su cuota en secretaría');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"socioId\": 3,\n  \"actividadId\": 2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/inscripciones",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "inscripciones"]
+            }
+          }
+        },
+        {
+          "name": "POST RN5 - Máximo 3 actividades (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 409 Conflict', () => pm.response.to.have.status(409));",
+                  "const body = pm.response.json();",
+                  "pm.test('Devuelve regla RN5 y mensaje oficial', () => {",
+                  "  pm.expect(body.regla).to.eql('RN5');",
+                  "  pm.expect(body.error).to.eql('Alcanzó el máximo de 3 actividades');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"socioId\": 4,\n  \"actividadId\": 2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/inscripciones",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "inscripciones"]
+            }
+          }
+        },
+        {
+          "name": "POST Inscripción con socio inexistente (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 404 Not Found', () => pm.response.to.have.status(404));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"socioId\": 999,\n  \"actividadId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/inscripciones",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "inscripciones"]
+            }
+          }
+        },
+        {
+          "name": "PUT Baja lógica de inscripción temporal (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test('Estado cambia a BAJA', () => pm.expect(body.estado).to.eql('BAJA'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/inscripciones/{{inscripcionTemporalId}}/baja",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "inscripciones", "{{inscripcionTemporalId}}", "baja"]
+            }
+          }
+        },
+        {
+          "name": "PUT Baja lógica de inscripción inexistente (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 404 Not Found', () => pm.response.to.have.status(404));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/inscripciones/999/baja",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "inscripciones", "999", "baja"]
+            }
+          }
+        },
+        {
+          "name": "DELETE Actividad temporal sin inscriptos activos (204)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 204 No Content', () => pm.response.to.have.status(204));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/actividades/{{actividadTemporalId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "actividades", "{{actividadTemporalId}}"]
+            }
+          }
+        },
+        {
+          "name": "DELETE Actividad inexistente (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 404 Not Found', () => pm.response.to.have.status(404));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/actividades/999",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "actividades", "999"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

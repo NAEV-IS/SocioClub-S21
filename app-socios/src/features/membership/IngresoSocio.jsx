@@ -13,9 +13,9 @@ export default function IngresoSocio() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  function ingresar(event) {
+  async function ingresar(event) {
     event.preventDefault();
-    const resultado = iniciarSesion(dni);
+    const resultado = await iniciarSesion(dni);
     if (!resultado.ok) {
       setError(resultado.mensaje);
       campo.current.focus();
@@ -46,14 +46,17 @@ export default function IngresoSocio() {
     <section className="login__samples" aria-labelledby="samples-title">
       <h2 id="samples-title">Socios de ejemplo</h2>
       <p className="muted">Elegí un perfil para probar disponibilidad, edades y cuota.</p>
-      {sociosEjemplo.map(socio => <div className="login__sample" key={socio.dni}>
-        <strong>{nombreCompleto(socio)}</strong>
-        <p className="support">DNI {socio.dni} · {calcularEdad(socio.fechaNacimiento)} años</p>
-        <p className="support">
-          {socio.estadoCuota === 'MOROSO' ? 'Cuota pendiente · MOROSO' : 'Cuota al día'}
-          {' · '}{inscripciones[socio.dni].length} actividades en esta demostración
-        </p>
-      </div>)}
+      {sociosEjemplo.map(socio => {
+        const ejemploIds = inscripciones[socio.dni];
+        return <div className="login__sample" key={socio.dni}>
+          <strong>{nombreCompleto(socio)}</strong>
+          <p className="support">DNI {socio.dni} · {calcularEdad(socio.fechaNacimiento)} años</p>
+          <p className="support">
+            {socio.estadoCuota === 'MOROSO' ? 'Cuota pendiente · MOROSO' : 'Cuota al día'}
+            {ejemploIds ? ` · ${ejemploIds.length} actividades en esta demostración` : ''}
+          </p>
+        </div>;
+      })}
     </section>
   </div>;
 }

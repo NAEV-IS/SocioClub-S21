@@ -11,6 +11,9 @@ export function calcularEdad(fechaNacimiento, hoy = new Date()) {
 }
 
 export function cupoDisponible(actividad, inscripciones, socios = SOCIOS) {
+  if (typeof actividad?.cupoDisponible === 'number') {
+    return Math.max(0, actividad.cupoDisponible);
+  }
   const iniciales = socios.filter(socio => socio.actividadesIniciales.includes(actividad.id)).length;
   const actuales = Object.values(inscripciones).filter(ids => ids.includes(actividad.id)).length;
   const ocupados = Math.max(0, actividad.ocupadosIniciales - iniciales + actuales);

@@ -11,14 +11,16 @@ export const actividadPropType = PropTypes.shape({
   edadMaxima: PropTypes.number.isRequired,
   cupoMaximo: PropTypes.number.isRequired,
   cuotaMensual: PropTypes.number.isRequired,
-  ocupadosIniciales: PropTypes.number.isRequired,
+  cupoDisponible: PropTypes.number,
+  ocupadosIniciales: PropTypes.number,
 });
 
 export const socioPropType = PropTypes.shape({
+  id: PropTypes.number,
   dni: PropTypes.string.isRequired,
   nombre: PropTypes.string.isRequired,
   apellido: PropTypes.string.isRequired,
   fechaNacimiento: PropTypes.string.isRequired,
   estadoCuota: PropTypes.oneOf(['AL_DIA', 'MOROSO']).isRequired,
-  actividadesIniciales: PropTypes.arrayOf(PropTypes.number).isRequired,
+  actividadesIniciales: PropTypes.arrayOf(PropTypes.number),
 });

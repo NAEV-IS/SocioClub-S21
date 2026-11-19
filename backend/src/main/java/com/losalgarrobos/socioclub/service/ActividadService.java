@@ -22,16 +22,23 @@ public class ActividadService {
     private InscripcionRepository inscripcionRepository;
 
     public List<Actividad> listarTodas() {
-        return actividadRepository.findAll();
+        return poblarCupos(actividadRepository.findAll());
+    }
+
+    public List<Actividad> listarPorDisciplina(String disciplina) {
+        if (disciplina == null || disciplina.isBlank()) {
+            return listarTodas();
+        }
+        return poblarCupos(actividadRepository.findByDisciplina(disciplina.trim()));
     }
 
     public Optional<Actividad> buscarPorId(Long id) {
-        return actividadRepository.findById(id);
+        return actividadRepository.findById(id).map(this::conCupo);
     }
 
     public Actividad guardar(Actividad actividad) {
         validar(actividad);
-        return actividadRepository.save(actividad);
+        return conCupo(actividadRepository.save(actividad));
     }
 
     /**
@@ -68,6 +75,18 @@ public class ActividadService {
         return cupos;
     }
 
+    private List<Actividad> poblarCupos(List<Actividad> actividades) {
+        for (Actividad actividad : actividades) {
+            conCupo(actividad);
+        }
+        return actividades;
+    }
+
+    private Actividad conCupo(Actividad actividad) {
+        actividad.setCupoDisponible(calcularCupoDisponible(actividad));
+        return actividad;
+    }
+
     private long calcularCupoDisponible(Actividad actividad) {
         int cupoMaximo = actividad.getCupoMaximo() != null ? actividad.getCupoMaximo() : 0;
         long inscriptos = inscripcionRepository.countActivasByActividadId(actividad.getId());
@@ -75,6 +94,9 @@ public class ActividadService {
     }
 
     private void validar(Actividad actividad) {
+        if (actividad.getNombre() == null || actividad.getNombre().isBlank()) {
+            throw new ReglaNegocioException("Ingresá el nombre de la actividad.");
+        }
         if (actividad.getDias() == null || actividad.getDias().isBlank()) {
             throw new ReglaNegocioException("Seleccioná al menos un día.");
         }

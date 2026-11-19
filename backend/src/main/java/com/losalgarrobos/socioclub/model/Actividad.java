@@ -1,5 +1,6 @@
 package com.losalgarrobos.socioclub.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +36,12 @@ public class Actividad {
     @Column(name = "cuota_mensual")
     private Double cuotaMensual;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "actividad")
     private List<Inscripcion> inscripciones = new ArrayList<>();
+
+    @Transient
+    private Long cupoDisponible;
 
     // Getters y setters manuales
     public Long getId() {
@@ -125,5 +130,13 @@ public class Actividad {
 
     public void setInscripciones(List<Inscripcion> inscripciones) {
         this.inscripciones = inscripciones;
+    }
+
+    public Long getCupoDisponible() {
+        return cupoDisponible;
+    }
+
+    public void setCupoDisponible(Long cupoDisponible) {
+        this.cupoDisponible = cupoDisponible;
     }
 }

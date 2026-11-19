@@ -2,6 +2,7 @@ package com.losalgarrobos.socioclub.service;
 
 import com.losalgarrobos.socioclub.model.Socio;
 import com.losalgarrobos.socioclub.repository.SocioRepository;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,8 +31,21 @@ public class SocioService {
     }
 
     @Transactional(readOnly = true)
+    public List<Socio> listarTodos() {
+        return socioRepository.findAll(Sort.by("apellido", "nombre", "id"));
+    }
+
+    @Transactional(readOnly = true)
     public Optional<Socio> buscarPorId(Long id) {
         return id == null || id < 1 ? Optional.empty() : socioRepository.findById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<Socio> buscarPorDni(String dni) {
+        if (dni == null || dni.isBlank()) {
+            return Optional.empty();
+        }
+        return socioRepository.findByDni(dni.trim());
     }
 
     @Transactional

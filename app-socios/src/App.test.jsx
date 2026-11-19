@@ -68,7 +68,7 @@ test('confirmar Yoga y dar de alta Ajedrez actualiza cupo, contador, avisos y cu
 test('cambiar de socio aísla sus actividades y conserva las modificaciones de Camila', async () => {
   const { user } = montar({ ruta: '/mis-actividades' });
   await cancelarYoga(user);
-  await user.click(screen.getByRole('link', { name: 'Cambiar socio', exact: true }));
+  await user.click(screen.getByRole('link', { name: 'Cerrar sesión', exact: true }));
   await ingresar(user, '35345678');
   expect(within(screen.getByRole('banner')).getByText('Bruno Castro')).toBeInTheDocument();
   await user.click(screen.getByRole('link', { name: 'Ver detalle de Ajedrez' }));
@@ -78,7 +78,7 @@ test('cambiar de socio aísla sus actividades y conserva las modificaciones de C
   expect(screen.getByLabelText('Actividades activas')).toHaveTextContent('0 actividades');
   await user.click(screen.getByRole('link', { name: 'Mis actividades', exact: true }));
   expect(screen.getByText('Todavía no tenés actividades activas')).toBeInTheDocument();
-  await user.click(screen.getByRole('link', { name: 'Cambiar socio', exact: true }));
+  await user.click(screen.getByRole('link', { name: 'Cerrar sesión', exact: true }));
   await ingresar(user, '32456789');
   await user.click(screen.getByRole('link', { name: 'Mis actividades', exact: true }));
   expect(within(cuota()).getByText(/^\$\s*43\.200$/)).toBeInTheDocument();

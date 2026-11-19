@@ -2,11 +2,10 @@ package com.losalgarrobos.socioclub.controller;
 
 import com.losalgarrobos.socioclub.model.Actividad;
 import com.losalgarrobos.socioclub.model.Inscripcion;
-import com.losalgarrobos.socioclub.repository.SocioRepository;
 import com.losalgarrobos.socioclub.service.ActividadService;
 import com.losalgarrobos.socioclub.service.InscripcionService;
 import com.losalgarrobos.socioclub.service.ReglaNegocioException;
-import org.springframework.data.domain.Sort;
+import com.losalgarrobos.socioclub.service.SocioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,10 +19,10 @@ import java.util.List;
 public class InscripcionController {
     private final InscripcionService inscripciones;
     private final ActividadService actividades;
-    private final SocioRepository socios;
+    private final SocioService socios;
 
     public InscripcionController(InscripcionService inscripciones, ActividadService actividades,
-                                 SocioRepository socios) {
+                                 SocioService socios) {
         this.inscripciones = inscripciones;
         this.actividades = actividades;
         this.socios = socios;
@@ -86,6 +85,6 @@ public class InscripcionController {
         List<Actividad> lista = actividades.listarTodas();
         model.addAttribute("actividades", lista);
         model.addAttribute("cupos", actividades.cuposDisponibles(lista));
-        model.addAttribute("socios", socios.findAll(Sort.by("apellido", "nombre", "id")));
+        model.addAttribute("socios", socios.listarTodos());
     }
 }

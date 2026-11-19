@@ -10,10 +10,12 @@ import ListaActividades from './features/agenda/ListaActividades';
 import './styles/shell.css';
 
 function RequiereSocio({ children }) {
-  const { socio } = useSocio();
+  const { socio, cargando, sesionCerrada } = useSocio();
   const location = useLocation();
-  // This is a local example-profile boundary, not authentication.
-  return socio ? children : <Navigate to="/" replace state={{ desde: location.pathname }} />;
+  if (cargando) {
+    return <section className="panel"><p>Cargando datos del club...</p></section>;
+  }
+  return socio ? children : <Navigate to="/" replace state={sesionCerrada ? null : { desde: location.pathname }} />;
 }
 RequiereSocio.propTypes = { children: PropTypes.node.isRequired };
 

@@ -18,6 +18,9 @@ public interface InscripcionRepository extends JpaRepository<Inscripcion, Long> 
     List<Inscripcion> findByActividadIdAndEstadoOrderBySocioApellidoAscSocioNombreAscIdAsc(
             Long actividadId, EstadoInscripcion estado);
 
+    List<Inscripcion> findBySocioIdAndEstadoOrderByActividadHorarioAscActividadIdAsc(
+            Long socioId, EstadoInscripcion estado);
+
     // Método derivado: Spring arma "WHERE actividad_id = ? AND estado = ?"
     List<Inscripcion> findByActividadIdAndEstado(Long actividadId, EstadoInscripcion estado);
 }
